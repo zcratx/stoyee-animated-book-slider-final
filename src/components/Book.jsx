@@ -91,7 +91,7 @@ pages.forEach((page) => {
   useTexture.preload(`/textures/book-cover-roughness.jpg`);
 });
 
-const Page = ({ number, front, back, page, opened, bookClosed, ...props }) => {
+const Page = ({ number, front, back, pagelink, page, opened, bookClosed, ...props }) => {
   const [picture, picture2, pictureRoughness] = useTexture([
     `/textures/${front}.jpg`,
     `/textures/${back}.jpg`,
@@ -249,9 +249,24 @@ const Page = ({ number, front, back, page, opened, bookClosed, ...props }) => {
       }}
       onClick={(e) => {
         e.stopPropagation();
-        console.log("The haha page number is ", e)
-        setPage(opened ? number : number + 1);
-        setHighlighted(false);
+        setHighlighted(true)
+       
+        if (window.ReactNativeWebView) {
+          console.log("It is react native web view, hence posting the message ")
+          if(page === 1) {
+            window.ReactNativeWebView.postMessage(pages[page].pagelink);
+          }
+        } else {
+          if(page === 1) {
+            console.log("The pagelink is ", pages[page].pagelink)
+            window.open(pages[page].pagelink); // Fallback for normal web browsers
+          } else {
+            console.log("No page link has been defined for the page ", page)
+          }
+          
+        }
+        // setPage(opened ? number : number + 1);
+        // setHighlighted(false);
       }}
     >
       <primitive

@@ -2,7 +2,7 @@ import { atom, useAtom } from "jotai";
 import { useEffect } from "react";
 
 const pictures = [
-  "DSC00680",
+  "book-page-1-compressed",
   "DSC00933",
   "DSC00966",
   "DSC00983",
@@ -25,18 +25,31 @@ export const pages = [
   {
     front: "book-cover",
     back: pictures[0],
+    pagelink: ""
   },
 ];
-for (let i = 1; i < pictures.length - 1; i += 2) {
-  pages.push({
-    front: pictures[i % pictures.length],
-    back: pictures[(i + 1) % pictures.length],
-  });
+for (let i = 1; i < pictures.length - 1; i += 1) {
+  if(i === 1) {
+    pages.push({
+      front: pictures[i-1 % pictures.length],
+      back: pictures[i% pictures.length],
+      pagelink: "http://192.168.0.11:5173",
+      //back: pictures[(i + 1) % pictures.length],
+    });
+  } else {
+    pages.push({
+      front: pictures[i-1 % pictures.length],
+      back: pictures[i% pictures.length],
+      pagelink: "",
+      //back: pictures[(i + 1) % pictures.length],
+    });
+  }
 }
 
 pages.push({
-  front: pictures[pictures.length - 1],
+  front:  "book-back",
   back: "book-back",
+  pagelink: "",
 });
 
 export const UI = () => {
@@ -50,12 +63,12 @@ export const UI = () => {
   return (
     <>
       <main className=" pointer-events-none select-none z-10 fixed  inset-0  flex justify-between flex-col">
-        <a
+        {/* <a
           className="pointer-events-auto mt-10 ml-10"
           href="https://lessons.wawasensei.dev/courses/react-three-fiber"
-        >
+        > */}
           <img className="w-20" src="/images/wawasensei-white.png" />
-        </a>
+        {/* </a> */}
         <div className="w-full overflow-auto pointer-events-auto flex justify-center ">
           <div className="overflow-auto flex items-center gap-4 max-w-full p-10">
             {[...pages].map((_, index) => (
@@ -67,7 +80,7 @@ export const UI = () => {
                     : "bg-black/30 text-white"
                 }`}
                 onClick={() => {
-                  alert("Page is clicked ", {index}) 
+                  {console.log("The page number is ", index)}
                   setPage(index)
                 }}
               >
@@ -80,7 +93,10 @@ export const UI = () => {
                   ? "bg-white/90 text-black"
                   : "bg-black/30 text-white"
               }`}
-              onClick={() => setPage(pages.length)}
+              onClick={() => {
+                {console.log("The page number is ", pages.length)}
+                setPage(pages.length)
+              }}
             >
               Back Cover
             </button>
