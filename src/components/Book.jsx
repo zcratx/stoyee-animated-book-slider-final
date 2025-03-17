@@ -254,12 +254,17 @@ const Page = ({ number, front, back, pagelink, page, opened, bookClosed, ...prop
         if (window.ReactNativeWebView) {
           console.log("It is react native web view, hence posting the message ")
           if(page === 1) {
-            window.ReactNativeWebView.postMessage(pages[page].pagelink);
+            window.ReactNativeWebView.postMessage(`http://192.168.0.11:5173/?id=${pages[page].pagelink}`);
+          } else if(page === 2) {
+            window.ReactNativeWebView.postMessage(`http://192.168.0.11:5173/?id=${pages[page].pagelink}`);
           }
         } else {
           if(page === 1) {
             console.log("The pagelink is ", pages[page].pagelink)
-            window.open(pages[page].pagelink); // Fallback for normal web browsers
+            window.open(`http://192.168.0.11:5173/?id=${pages[page].pagelink}`); // Fallback for normal web browsers
+          } else if(page === 2) {
+            console.log("The pagelink is ", pages[page].pagelink)
+            window.open(`http://192.168.0.11:5173/?id=${pages[page].pagelink}`); // Fallback for normal web browsers
           } else {
             console.log("No page link has been defined for the page ", page)
           }

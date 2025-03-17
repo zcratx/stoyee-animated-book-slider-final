@@ -1,6 +1,8 @@
 import { atom, useAtom } from "jotai";
 import { useEffect } from "react";
 
+import { SliderApp} from "./SliderApp"
+
 const pictures = [
   "book-page-1-compressed",
   "DSC00933",
@@ -33,7 +35,14 @@ for (let i = 1; i < pictures.length - 1; i += 1) {
     pages.push({
       front: pictures[i-1 % pictures.length],
       back: pictures[i% pictures.length],
-      pagelink: "http://192.168.0.11:5173",
+      pagelink: "6e4y0tz3a1h6x33",
+      //back: pictures[(i + 1) % pictures.length],
+    });
+  } else if(i === 2) {
+    pages.push({
+      front: pictures[i-1 % pictures.length],
+      back: pictures[i% pictures.length],
+      pagelink: "v08k6xv1zc81t3d",
       //back: pictures[(i + 1) % pictures.length],
     });
   } else {
@@ -69,6 +78,11 @@ export const UI = () => {
         > */}
           <img className="w-20" src="/images/wawasensei-white.png" />
         {/* </a> */}
+
+        {/* <div style={{ width: '100%', height: '100vh' }}>
+          <SliderApp />
+        </div> */}
+
         <div className="w-full overflow-auto pointer-events-auto flex justify-center ">
           <div className="overflow-auto flex items-center gap-4 max-w-full p-10">
             {[...pages].map((_, index) => (
