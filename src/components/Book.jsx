@@ -19,6 +19,8 @@ import {
 import { degToRad } from "three/src/math/MathUtils.js";
 import { pageAtom, pages } from "./UI";
 
+import {pocketBaseUrl} from  "../store"
+
 const easingFactor = 0.5; // Controls the speed of the easing
 const easingFactorFold = 0.3; // Controls the speed of the easing
 const insideCurveStrength = 0.18; // Controls the strength of the curve
@@ -85,19 +87,39 @@ const pageMaterials = [
   }),
 ];
 
+const baseURL = `${pocketBaseUrl}/api/files/Stoyee`;
+
 pages.forEach((page) => {
-  useTexture.preload(`/textures/${page.front}.jpg`);
-  useTexture.preload(`/textures/${page.back}.jpg`);
-  useTexture.preload(`/textures/book-cover-roughness.jpg`);
+  // useTexture.preload(`/textures/${page.front}.jpg`);
+  // useTexture.preload(`/textures/${page.back}.jpg`);
+  if(page.front === "book-cover"){
+    useTexture.preload(`/textures/book-cover.jpg`);
+  } else if(page.front === "book-back") {
+    useTexture.preload(`/textures/book-back.jpg`);
+  } else if(page.back === "book-back") {
+    useTexture.preload(`/textures/book-back.jpg`);
+  } else {
+    useTexture.preload(`${baseURL}/${page.id}/${page.front}`);
+    useTexture.preload(`${baseURL}/${page.id}/${page.back}`);
+    useTexture.preload(`/textures/book-cover-roughness.jpg`);
+  }
 });
 
 const Page = ({ number, front, back, pagelink, page, opened, bookClosed, ...props }) => {
   const [picture, picture2, pictureRoughness] = useTexture([
-    `/textures/${front}.jpg`,
-    `/textures/${back}.jpg`,
+    // `/textures/${front}.jpg`,
+    // `/textures/${back}.jpg`,   
+
+    ...(number === 0 
+      ? [`/textures/book-cover.jpg`]
+      : [`${baseURL}/${front.id}/${front.thumbnail}`]),
+    ...(number === pages.length -1 
+      ? [`/textures/book-back.jpg`]
+      : [`${baseURL}/${back.id}/${back.thumbnail}`]),
     ...(number === 0 || number === pages.length - 1
       ? [`/textures/book-cover-roughness.jpg`]
       : []),
+   
   ]);
   picture.colorSpace = picture2.colorSpace = SRGBColorSpace;
   const group = useRef();

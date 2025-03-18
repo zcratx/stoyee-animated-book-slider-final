@@ -1,67 +1,130 @@
 import { atom, useAtom } from "jotai";
 import { useEffect } from "react";
 
-import { SliderApp} from "./SliderApp"
+import {sessionConfiguratorStore, pocketBaseUrl} from  "../store"
 
-const pictures = [
-  "book-page-1-compressed",
-  "DSC00933",
-  "DSC00966",
-  "DSC00983",
-  "DSC01011",
-  "DSC01040",
-  "DSC01064",
-  "DSC01071",
-  "DSC01103",
-  "DSC01145",
-  "DSC01420",
-  "DSC01461",
-  "DSC01489",
-  "DSC02031",
-  "DSC02064",
-  "DSC02069",
-];
+//import { SliderApp} from "./SliderApp"
+
+// const pictures = [
+//   "book-page-1-compressed",
+//   "DSC00933",
+//   "DSC00966",
+//   "DSC00983",
+//   "DSC01011",
+//   "DSC01040",
+//   "DSC01064",
+//   "DSC01071",
+//   "DSC01103",
+//   "DSC01145",
+//   "DSC01420",
+//   "DSC01461",
+//   "DSC01489",
+//   "DSC02031",
+//   "DSC02064",
+//   "DSC02069",
+// ];
 
 export const pageAtom = atom(0);
-export const pages = [
-  {
-    front: "book-cover",
-    back: pictures[0],
-    pagelink: ""
-  },
-];
-for (let i = 1; i < pictures.length - 1; i += 1) {
-  if(i === 1) {
-    pages.push({
-      front: pictures[i-1 % pictures.length],
-      back: pictures[i% pictures.length],
-      pagelink: "6e4y0tz3a1h6x33",
-      //back: pictures[(i + 1) % pictures.length],
-    });
-  } else if(i === 2) {
-    pages.push({
-      front: pictures[i-1 % pictures.length],
-      back: pictures[i% pictures.length],
-      pagelink: "v08k6xv1zc81t3d",
-      //back: pictures[(i + 1) % pictures.length],
-    });
-  } else {
-    pages.push({
-      front: pictures[i-1 % pictures.length],
-      back: pictures[i% pictures.length],
-      pagelink: "",
-      //back: pictures[(i + 1) % pictures.length],
-    });
-  }
-}
 
-pages.push({
-  front:  "book-back",
-  back: "book-back",
-  pagelink: "",
-});
+// export const pages = [
+//   {
+//     front: "book-cover",
+//     back: pictures[0],
+//     pagelink: ""
+//   },
+// ];
+// for (let i = 1; i < pictures.length - 1; i += 1) {
+//   if(i === 1) {
+//     pages.push({
+//       front: pictures[i-1 % pictures.length],
+//       back: pictures[i% pictures.length],
+//       pagelink: "6e4y0tz3a1h6x33",
+//       //back: pictures[(i + 1) % pictures.length],
+//     });
+//   } else if(i === 2) {
+//     pages.push({
+//       front: pictures[i-1 % pictures.length],
+//       back: pictures[i% pictures.length],
+//       pagelink: "v08k6xv1zc81t3d",
+//       //back: pictures[(i + 1) % pictures.length],
+//     });
+//   } else {
+//     pages.push({
+//       front: pictures[i-1 % pictures.length],
+//       back: pictures[i% pictures.length],
+//       pagelink: "",
+//       //back: pictures[(i + 1) % pictures.length],
+//     });
+//   }
+// }
+
+// pages.push({
+//   front:  "book-back",
+//   back: "book-back",
+//   pagelink: "",
+// });
+
+export let pages = [];
 
 export const UI = () => {
+
+  const stoyees_from_db = sessionConfiguratorStore((state) => state.stoyees_from_db);
+
+  console.log("The stoyees from DB are ", stoyees_from_db);
+
+  // const pictures_from_db = stoyees_from_db
+  // ? stoyees_from_db.map(stoyee_from_db => {stoyee_from_db.id, stoyee_from_db.thumbnail}) 
+  // : []; // Ensure pictures_from_db is always an array
+
+  const pictures_from_db = stoyees_from_db
+    ? stoyees_from_db.map(stoyee_from_db => ({
+      id: stoyee_from_db.id,
+      thumbnail: stoyee_from_db.thumbnail
+    }))
+  : [];
+  
+  
+  console.log("The pictures from the DB are ", pictures_from_db);
+
+
+  pages = [
+    {
+      front: {"id":"000000000000002","thumbnail":"book_cover_5mzje60jr2.jpg"},
+      back: pictures_from_db[0],
+      pagelink: "",      
+    },
+  ];
+  for (let i = 1; i < pictures_from_db.length - 1; i += 1) {
+    if(i === 1) {
+      pages.push({
+        front: pictures_from_db[i-1 % pictures_from_db.length],
+        back: pictures_from_db[i% pictures_from_db.length],
+        pagelink: "6e4y0tz3a1h6x33",           
+      });
+    } else if(i === 2) {
+      pages.push({
+        front: pictures_from_db[i-1 % pictures_from_db.length],
+        back: pictures_from_db[i% pictures_from_db.length],
+        pagelink: "v08k6xv1zc81t3d",            
+      });
+    } else {
+      pages.push({
+        front: pictures_from_db[i-1 % pictures_from_db.length],
+        back: pictures_from_db[i% pictures_from_db.length],
+        pagelink: "",         
+      });
+    }
+  }
+  
+  pages.push({
+    front: {"id": "000000000000001", "thumbnail": "book_back_esjtener91.jpg"},
+    back: {"id": "000000000000001", "thumbnail":"book_back_esjtener91.jpg"},
+    pagelink: "",
+   
+  });
+
+  console.log("THE MOST IMPORTANT PAGES ARE ", pages)
+
   const [page, setPage] = useAtom(pageAtom);
 
   useEffect(() => {
