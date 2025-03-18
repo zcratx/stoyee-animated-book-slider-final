@@ -79,7 +79,8 @@ export const UI = () => {
   const pictures_from_db = stoyees_from_db
     ? stoyees_from_db.map(stoyee_from_db => ({
       id: stoyee_from_db.id,
-      thumbnail: stoyee_from_db.thumbnail
+      thumbnail: stoyee_from_db.thumbnail,
+      avatarID: stoyee_from_db.avatarid
     }))
   : [];
   
@@ -89,9 +90,9 @@ export const UI = () => {
 
   pages = [
     {
-      front: {"id":"000000000000002","thumbnail":"book_cover_5mzje60jr2.jpg"},
+      front: {"id":"000000000000002","thumbnail":"book_cover_5mzje60jr2.jpg", "avatarID": ""},
       back: pictures_from_db[0],
-      pagelink: "",      
+      //pagelink: "",      
     },
   ];
   for (let i = 1; i < pictures_from_db.length - 1; i += 1) {
@@ -99,19 +100,19 @@ export const UI = () => {
       pages.push({
         front: pictures_from_db[i-1 % pictures_from_db.length],
         back: pictures_from_db[i% pictures_from_db.length],
-        pagelink: "6e4y0tz3a1h6x33",           
+        //pagelink: "6e4y0tz3a1h6x33",           
       });
     } else if(i === 2) {
       pages.push({
         front: pictures_from_db[i-1 % pictures_from_db.length],
         back: pictures_from_db[i% pictures_from_db.length],
-        pagelink: "v08k6xv1zc81t3d",            
+        //pagelink: "v08k6xv1zc81t3d",            
       });
     } else {
       pages.push({
         front: pictures_from_db[i-1 % pictures_from_db.length],
         back: pictures_from_db[i% pictures_from_db.length],
-        pagelink: "",         
+        //pagelink: "",         
       });
     }
   }
