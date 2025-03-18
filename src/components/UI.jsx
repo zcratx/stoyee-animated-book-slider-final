@@ -116,12 +116,12 @@ export const UI = () => {
     }
   }
   
-  pages.push({
-    front: {"id": "000000000000001", "thumbnail": "book_back_esjtener91.jpg"},
-    back: {"id": "000000000000001", "thumbnail":"book_back_esjtener91.jpg"},
-    pagelink: "",
+  // pages.push({
+  //   front: {"id": "000000000000001", "thumbnail": "book_back_esjtener91.jpg"},
+  //   back: {"id": "000000000000001", "thumbnail":"book_back_esjtener91.jpg"},
+  //   pagelink: "",
    
-  });
+  // });
 
   console.log("THE MOST IMPORTANT PAGES ARE ", pages)
 
